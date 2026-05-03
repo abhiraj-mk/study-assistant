@@ -16,7 +16,18 @@ app.use(helmet());
 app.use(morgan('dev'));
 
 app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:5173',
+  origin: function (origin, callback) {
+    const allowed = [
+      'http://localhost:5173',
+      'https://study-assistant-rust.vercel.app',
+      /\.vercel\.app$/  // allows all vercel preview URLs
+    ];
+    if (!origin || allowed.some(o => o instanceof RegExp ? o.test(origin) : o === origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true
 }));
 
