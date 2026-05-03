@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: '/api',
-  timeout: 120000 // 2 min for large AI requests
+  baseURL: import.meta.env.VITE_API_URL || '/api',  // ✅ Change this line
+  timeout: 120000
 });
 
 // Attach JWT token
